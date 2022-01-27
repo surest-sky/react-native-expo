@@ -1,10 +1,16 @@
 import request from '../utils/request';
 
-export function verifyCode(query) {
-    console.log(query);
+export function loginApi(data) {
     return request({
-        url: '/auth/verifyCode',
+        url: '/login',
         method: 'post',
-        params: query,
+        data,
+    });
+}
+
+export function meApi() {
+    return request({
+        url: '/me',
+        method: 'post',
     });
 }

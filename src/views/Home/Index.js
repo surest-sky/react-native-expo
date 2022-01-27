@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View, StyleSheet, TouchableHighlight, SafeAreaView, Text, FlatList, Dimensions } from 'react-native';
-import { Searchbar, Chip } from 'react-native-paper';
+import { Searchbar, Chip, TouchableRipple } from 'react-native-paper';
+import * as RootNavigation from '../../utils/rootNavigation';
+import { listApi } from '../../apis/list';
 
 const height = Dimensions.get('window').height;
 
@@ -8,108 +10,129 @@ const contentTitle = (title, length = 35) => {
     if (title.length > 10) {
         return title.substr(0, length) + '...';
     }
-
     return title;
 };
 
 const Item = ({ item }) => {
-    const ContentItem = ({ item }) => {
-        if (item.title) {
-            return (
-                <View>
-                    <Text>{contentTitle(item.title, 5)}</Text>
-
-                    <Text>
-                        <Text>-</Text>
-                        {contentTitle(item.url)}
-                    </Text>
-                </View>
-            );
-        }
-        if (item.content) {
-            return (
-                <View>
-                    <Text>{contentTitle(item.text)}</Text>
-                </View>
-            );
-        }
-
-        if (!item.title && !item.content) {
-            return (
-                <View>
-                    <Text>{contentTitle(item.url)}</Text>
-                </View>
-            );
-        }
-
-        return <Text>顶顶顶顶</Text>;
+    const noteShow = item => {
+        RootNavigation.navigate('Show');
     };
-
     return (
-        <View style={styles.item}>
-            <View style={styles.content}>
-                <TouchableHighlight>
-                    <ContentItem item={item} />
-                </TouchableHighlight>
+        <TouchableRipple style={styles.item} onPress={() => noteShow(item)} rippleColor="rgba(0, 0, 0, .12)">
+            <View>
+                <View style={{ borderRadius: 15 }}>
+                    <Text style={styles.itemTag}>笔记</Text>
+                </View>
+                <View style={{ marginTop: 10 }}>
+                    <Text>{contentTitle(item.content ? item.content : item.url)}</Text>
+                </View>
 
-                <Text style={{ marginTop: 10 }}>
-                    <View style={{ marginTop: 10 }}>
-                        <Text style={{ marginRight: 10 }}>
-                            -<Text>{item.created_at}</Text>
-                        </Text>
-                    </View>
-                </Text>
+                <View>
+                    <Text style={styles.itemDesc}>{item.created_at}</Text>
+                </View>
             </View>
-            <View style={styles.itemTag}>
-                <Text style={{ color: 'white', textAlign: 'center', fontSize: 12, height: 15 }}>{item.type == 1 ? '#链接' : '笔记'}</Text>
-            </View>
-        </View>
+        </TouchableRipple>
     );
 };
 
 const Home = () => {
-    let list = require('../../res/list.json');
-    list = list.list;
-    const [searchQuery, setSearchQuery] = React.useState('');
-    const onChangeSearch = query => setSearchQuery(query);
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [filter, setFilter] = React.useState({
+        page: 1,
+        pageSize: 20,
+        keyword: '',
+    });
+    const [list, setList] = React.useState([]);
+    const searchQuery = async () => {
+        const list = await getList();
+        setList(list);
+    };
 
-    const renderItem = ({ item }) => <Item item={item} />;
+    const onRefresh = async () => {
+        setFilter({ ...filter, page: 1, pageSize: 20 });
+        await searchQuery();
+        setRefreshing(false);
+    };
+
+    const getList = async () => {
+        const data = await listApi(filter);
+        if (data) {
+            if (data.data.list) {
+                return data.data.list.map(item => {
+                    item.content = item.content ? item.content.replace(/(<([^>]+)>)/gi, '') : '';
+                    return item;
+                });
+            }
+
+            return [];
+        }
+        return [];
+    };
+
+    React.useEffect(async () => {
+        searchQuery();
+    }, []);
+
+    React.useEffect(async () => {
+        if (filter.keyword.length == 0) {
+            searchQuery();
+        }
+    }, [filter.keyword]);
+
+    const renderItem = ({ item }) => {
+        return <Item item={item} />;
+    };
 
     return (
         <SafeAreaView style={styles.container}>
-            <Searchbar style={{ marginBottom: 5 }} placeholder="Search" onChangeText={onChangeSearch} value={searchQuery} />
+            <Searchbar style={{ marginBottom: 5, borderRadius: 15 }} placeholder="Search" onIconPress={searchQuery} onChangeText={query => setFilter({ ...filter, keyword: query })} value={filter.keyword} />
             <View style={styles.wrapper}>
-                <FlatList data={list} renderItem={renderItem} keyExtractor={item => item.id} />
+                <FlatList refreshing={refreshing} data={list} onRefresh={onRefresh} renderItem={renderItem} keyExtractor={item => item.id} />
             </View>
         </SafeAreaView>
     );
 };
 
+function MyComponent(props) {
+    return (
+        <View {...props} style={{ flex: 1, backgroundColor: '#fff' }}>
+            <Text>My Component</Text>
+        </View>
+    );
+}
+
 const styles = StyleSheet.create({
     container: {
-        padding: 5,
-        marginTop: 20,
+        // padding: 15,
+        marginTop: 25,
         marginHorizontal: 2,
     },
     wrapper: {
-        // height: 650,
+        minHeight: 650,
         marginBottom: 25,
+        minHeight: 100,
+        padding: 5,
+        paddingBottom: 85,
     },
     item: {
-        height: 75,
+        // height: 75,
         backgroundColor: 'white',
         marginVertical: 3,
-        flex: 1,
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         padding: 10,
         paddingBottom: 10,
+        borderRadius: 5,
+    },
+    itemDesc: {
+        fontSize: 12,
+        color: '#a39e9e',
+        marginTop: 12,
     },
     itemTag: {
-        width: '12%',
+        width: 50,
         backgroundColor: '#4bc2c5',
-        marginLeft: 20,
+        color: 'white',
+        fontSize: 12,
+        textAlign: 'center',
         height: 15,
     },
     content: {

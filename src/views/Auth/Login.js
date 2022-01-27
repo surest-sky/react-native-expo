@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, Image, StyleSheet, StatusBar, Dimensions } from 'react-native';
 import { TextInput, Card, Button } from 'react-native-paper';
 import validator from '../../utils/validator';
 import { verifyCode } from '../../apis/auth';
-
+import * as Animatable from 'react-native-animatable';
+import BackgroundImage from '../../../resource/images/home.jpeg';
 /**
  * 发送验证码
  * @param {*} phone
@@ -61,7 +62,7 @@ const TextInputWrapper = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <View style={styles.loginContainer}>
             <TextInput style={{ height: 40 }} label="Phone" value={form.phone} mode="outlined" error={!form.isValid} maxLength={11} onChangeText={phone => setForm({ ...form, phone: phone })} left={<TextInput.Icon name="phone" color={'#ccc'} />} keyboardType="phone-pad" />
             <View style={{ marginTop: 10 }}>
                 <Button mode="contained" contentStyle={{ height: 40 }} onPress={() => verifyCode()} loading={form.loading}>
@@ -74,20 +75,38 @@ const TextInputWrapper = ({ navigation }) => {
 
 const Login = ({ navigation }) => {
     return (
-        <View style={styles.loginContainer}>
+        <View>
             <StatusBar backgroundColor="red" translucent={true} />
-            <TextBanner></TextBanner>
+            <Animatable.Text style={styles.titleText} animation="fadeInUp" delay={1200}>
+                Travello
+            </Animatable.Text>
+            <Image style={{ height: 500 }} source={BackgroundImage}></Image>
             <TextInputWrapper navigation={navigation} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    titleText: {
+        position: 'absolute',
+        top: Dimensions.get('screen').height * 0.1,
+        alignSelf: 'center',
+        color: '#fff',
+        fontFamily: 'SourceSansProBold',
+        fontSize: 60,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.44,
+        shadowRadius: 10.32,
+        elevation: 16,
+    },
     banner: {
         height: 200,
     },
     loginContainer: {
-        // backgroundColor: 'white',
         padding: 10,
         paddingTop: 20,
         height: 400,
