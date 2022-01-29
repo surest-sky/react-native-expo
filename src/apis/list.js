@@ -7,3 +7,11 @@ export function listApi(data) {
         params: data,
     });
 }
+
+export function postApi(data) {
+    return request({
+        url: '/note/post',
+        method: 'post',
+        data,
+    });
+}

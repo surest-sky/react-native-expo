@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableHighlight, SafeAreaView, Text, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, SafeAreaView, Text, FlatList, Dimensions, ScrollView } from 'react-native';
 import { Searchbar, Chip, TouchableRipple } from 'react-native-paper';
 import * as RootNavigation from '../../utils/rootNavigation';
 import { listApi } from '../../apis/list';
 import Toast from '../../utils/toast';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 const height = Dimensions.get('window').height;
 const contentTitle = (title, length = 35) => {
@@ -12,13 +13,20 @@ const contentTitle = (title, length = 35) => {
     }
     return title;
 };
+const ListContext = React.createContext({});
 
 const Item = ({ item }) => {
+    const { sheetRef, setSheetContent } = React.useContext(ListContext);
     const noteShow = () => {
         if (item.url) {
             RootNavigation.navigate('Show', { url: item.url });
         } else {
             Toast.success('稍等片刻，开发中呢~');
+            setSheetContent({
+                content: `${item.content}`,
+                created_at: `创建时间: ${item.created_at}`,
+            });
+            sheetRef.current.open();
         }
     };
     return (
@@ -60,6 +68,12 @@ const Home = () => {
         await searchQuery();
         setRefreshing(false);
     };
+
+    const sheetRef = React.useRef();
+    const [sheetContent, setSheetContent] = React.useState({
+        content: '',
+        created_at: '',
+    });
 
     const getList = async () => {
         const data = await listApi(filter);
@@ -112,31 +126,45 @@ const Home = () => {
         return rnd;
     }
 
-    console.log(222);
-
     return (
         <SafeAreaView style={styles.container}>
             <Searchbar style={{ marginBottom: 5, borderRadius: 15 }} placeholder="Search" onIconPress={searchQuery} onChangeText={query => setFilter({ ...filter, keyword: query })} value={filter.keyword} />
             <View style={styles.wrapper}>
-                <FlatList initialNumToRender={7} onEndReachedThreshold={0.1} refreshing={refreshing} onEndReached={onEndReached} data={list} onRefresh={onRefresh} renderItem={renderItem} keyExtractor={item => RndNum(10)} />
+                <ListContext.Provider
+                    value={{
+                        sheetRef: sheetRef,
+                        setSheetContent: setSheetContent,
+                    }}
+                >
+                    <FlatList sheetRef={sheetRef} initialNumToRender={7} onEndReachedThreshold={0.1} refreshing={refreshing} onEndReached={onEndReached} data={list} onRefresh={onRefresh} renderItem={renderItem} keyExtractor={item => RndNum(10)} />
+                </ListContext.Provider>
             </View>
+            <RBSheet
+                ref={sheetRef}
+                height={height - 100}
+                openDuration={250}
+                closeOnDragDown={true}
+                customStyles={{
+                    container: {
+                        borderTopRightRadius: 20,
+                        borderTopLeftRadius: 20,
+                        paddingHorizontal: 5,
+                        paddingLeft: 20,
+                    },
+                }}
+            >
+                <ScrollView>
+                    <Text>{sheetContent.content}</Text>
+                    <Text style={styles.itemDesc}>{sheetContent.created_at}</Text>
+                </ScrollView>
+            </RBSheet>
         </SafeAreaView>
     );
 };
 
-function MyComponent(props) {
-    return (
-        <View {...props} style={{ flex: 1, backgroundColor: '#fff' }}>
-            <Text>My Component</Text>
-        </View>
-    );
-}
-
 const styles = StyleSheet.create({
     container: {
-        // padding: 15,
         marginTop: 35,
-        // marginHorizontal: 2,
     },
     wrapper: {
         minHeight: 650,

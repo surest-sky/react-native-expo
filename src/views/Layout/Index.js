@@ -11,7 +11,6 @@ import { AuthCheck } from '../../utils/action';
 
 const MyComponent = ({ navigation }) => {
     React.useEffect(() => {
-        console.log('process');
         AuthCheck();
     }, []);
 
@@ -19,7 +18,7 @@ const MyComponent = ({ navigation }) => {
     const PublishRoute = () => <Publish navigation={navigation} />;
     const AccountRoute = () => <Account navigation={navigation} />;
 
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = React.useState(1);
     const [routes] = React.useState([
         { key: 'home', title: '我的库', icon: 'card-text-outline' },
         { key: 'publish', title: '发布', icon: 'plus-circle-outline' },

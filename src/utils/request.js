@@ -8,11 +8,6 @@ const instance = axios.create({
     baseURL: BASE_URL,
 });
 let token;
-Storage.get('token').then(data => {
-    token = data.token;
-});
-
-console.log('token', token);
 // create an axios instance
 const service = axios.create({
     baseURL: BASE_URL,
@@ -21,7 +16,9 @@ const service = axios.create({
 
 // request interceptor
 service.interceptors.request.use(
-    config => {
+    async config => {
+        const data = await Storage.get('token');
+        token = data.token;
         if (token) {
             config.headers.Authorization = 'Bearer ' + token;
         }
