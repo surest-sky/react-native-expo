@@ -9,7 +9,6 @@ import Layout from './views/Layout/Index';
 import Show from './views/Home/Show';
 
 const Stack = createNativeStackNavigator();
-
 function App() {
     return (
         <NavigationContainer ref={RootNavigation.navigationRef}>

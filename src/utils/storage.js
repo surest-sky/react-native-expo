@@ -8,10 +8,14 @@ class DeviceStorage {
      */
 
     static get(key) {
-        return AsyncStorage.getItem(key).then(value => {
-            const jsonValue = JSON.parse(value);
-            return jsonValue;
-        });
+        try {
+            return AsyncStorage.getItem(key).then(value => {
+                const jsonValue = JSON.parse(value);
+                return jsonValue;
+            });
+        } catch (error) {
+            return Promise.resolve({});
+        }
     }
 
     /**

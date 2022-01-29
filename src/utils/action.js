@@ -4,6 +4,7 @@ import Toast from './toast';
 import * as RootNavigation from './rootNavigation';
 
 export const LoginAction = ({ token }) => {
+    console.log('token', token);
     Storage.save('token', { token: token });
 };
 

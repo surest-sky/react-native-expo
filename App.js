@@ -3,7 +3,7 @@ import { Button, View, Text, StatusBar } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Navigation from './src/Navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
-// if (false) {
+// if (true) {
 //     import('./src/utils/ReactotronConfig').then(() => {
 //         console.log('ReactotronConfig');
 //     });

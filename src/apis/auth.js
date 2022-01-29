@@ -7,10 +7,3 @@ export function loginApi(data) {
         data,
     });
 }
-
-export function meApi() {
-    return request({
-        url: '/me',
-        method: 'post',
-    });
-}
