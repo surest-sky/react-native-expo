@@ -4880,6 +4880,11 @@ rn-host-detect@1.2.0:
   resolved "https://registry.nlark.com/rn-host-detect/download/rn-host-detect-1.2.0.tgz#8b0396fc05631ec60c1cb8789e5070cdb04d0da0"
   integrity sha1-iwOW/AVjHsYMHLh4nlBwzbBNDaA=
 
+rn-placeholder@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.nlark.com/rn-placeholder/download/rn-placeholder-3.0.3.tgz#98f635b263ee003af2a984eed32d86ade308df35"
+  integrity sha1-mPY1smPuADryqYTu0y2GreMI3zU=
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.nlark.com/rsvp/download/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"

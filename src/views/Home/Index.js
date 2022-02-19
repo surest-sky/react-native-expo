@@ -1,48 +1,36 @@
 import * as React from 'react';
-import { View, StyleSheet, TouchableHighlight, SafeAreaView, Text, FlatList, Dimensions, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, SafeAreaView, TouchableOpacity, Text, FlatList, Dimensions, ScrollView } from 'react-native';
 import { Searchbar, Chip, TouchableRipple } from 'react-native-paper';
 import * as RootNavigation from '../../utils/rootNavigation';
 import { listApi } from '../../apis/list';
 import Toast from '../../utils/toast';
 import RBSheet from 'react-native-raw-bottom-sheet';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import ItemComponent from './Item';
+import LoadingComponent from './Loading';
 const height = Dimensions.get('window').height;
-const contentTitle = (title, length = 35) => {
-    if (title.length > 10) {
-        return title.substr(0, length) + '...';
-    }
-    return title;
+const width = Dimensions.get('window').width;
+
+/**
+ * 导航到 搜索界面
+ */
+const NativeSearchPage = () => {
+    console.log(22);
+    RootNavigation.navigate('Search');
 };
-const ListContext = React.createContext({});
 
-const Item = ({ item }) => {
-    const { sheetRef, setSheetContent } = React.useContext(ListContext);
-    const noteShow = () => {
-        if (item.url) {
-            RootNavigation.navigate('Show', { url: item.url });
-        } else {
-            Toast.success('稍等片刻，开发中呢~');
-            setSheetContent({
-                content: `${item.content}`,
-                created_at: `创建时间: ${item.created_at}`,
-            });
-            sheetRef.current.open();
-        }
-    };
+const SerachBar = () => {
     return (
-        <TouchableRipple style={styles.item} onPress={() => noteShow()} rippleColor="rgba(0, 0, 0, .12)">
-            <View>
-                {/* <View style={{ borderRadius: 15 }}>
-                    <Text style={styles.itemTag}>笔记</Text>
-                </View> */}
-                <View style={{ marginTop: 10 }}>
-                    <Text>{contentTitle(item.content ? item.content : '-')}</Text>
-
-                    {item.url ? <Text style={{ marginTop: 10, color: 'gray', fontSize: 12 }}>{contentTitle(item.url)}</Text> : <Text></Text>}
-                </View>
-
-                <View>
-                    <Text style={styles.itemDesc}>{item.created_at}</Text>
+        <TouchableRipple
+            style={styles.searchBar}
+            onPress={() => {
+                NativeSearchPage();
+            }}
+        >
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', height: 20 }}>
+                <Text style={styles.searchBarText}>搜索你的关键词...</Text>
+                <View style={styles.searchIcon}>
+                    <Ionicons style={{ color: '#181407' }} name={'search'} size={25} />
                 </View>
             </View>
         </TouchableRipple>
@@ -58,8 +46,12 @@ const Home = () => {
     });
     const [list, setList] = React.useState([]);
     const [total, setTotal] = React.useState(0);
+    const [loading, setLoading] = React.useState(true);
     const searchQuery = async () => {
+        setLoading(true);
         const list = await getList();
+        setLoading(false);
+        console.log(list);
         setList(list);
     };
 
@@ -91,7 +83,9 @@ const Home = () => {
     };
 
     React.useEffect(async () => {
+        setLoading(true);
         getList();
+        setLoading(false);
         setRefreshing(false);
     }, []);
 
@@ -102,7 +96,7 @@ const Home = () => {
     }, [filter.keyword]);
 
     const renderItem = ({ item }) => {
-        return <Item item={item} />;
+        return <ItemComponent item={item} sheetRef={sheetRef} setSheetContent={setSheetContent} />;
     };
 
     const onEndReached = async () => {
@@ -128,20 +122,29 @@ const Home = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Searchbar style={{ marginBottom: 5, borderRadius: 15 }} placeholder="Search" onIconPress={searchQuery} onChangeText={query => setFilter({ ...filter, keyword: query })} value={filter.keyword} />
-            <View style={styles.wrapper}>
-                <ListContext.Provider
-                    value={{
-                        sheetRef: sheetRef,
-                        setSheetContent: setSheetContent,
-                    }}
-                >
-                    <FlatList sheetRef={sheetRef} initialNumToRender={7} onEndReachedThreshold={0.1} refreshing={refreshing} onEndReached={onEndReached} data={list} onRefresh={onRefresh} renderItem={renderItem} keyExtractor={item => RndNum(10)} />
-                </ListContext.Provider>
-            </View>
+            <SerachBar />
+
+            {loading == true ? (
+                <LoadingComponent />
+            ) : (
+                <View style={styles.wrapper}>
+                    <FlatList
+                        sheetRef={sheetRef}
+                        initialNumToRender={7}
+                        onEndReachedThreshold={0.1}
+                        refreshing={refreshing}
+                        onEndReached={onEndReached}
+                        data={list}
+                        onRefresh={onRefresh}
+                        renderItem={renderItem}
+                        keyExtractor={item => RndNum(10)}
+                    />
+                </View>
+            )}
+
             <RBSheet
                 ref={sheetRef}
-                height={height - 100}
+                // height={height - 00}
                 openDuration={250}
                 closeOnDragDown={true}
                 customStyles={{
@@ -165,21 +168,27 @@ const Home = () => {
 const styles = StyleSheet.create({
     container: {
         marginTop: 35,
+        height: height - 110,
     },
     wrapper: {
-        minHeight: 650,
-        marginBottom: 25,
+        // minHeight: 650,
+        // marginBottom: 25,
         minHeight: 100,
         // padding: 5,
-        paddingBottom: 85,
+        // paddingBottom: 85,
     },
     item: {
         // height: 75,
         backgroundColor: 'white',
-        marginVertical: 3,
+        marginVertical: 5,
+        marginHorizontal: 10,
         padding: 10,
         paddingBottom: 10,
-        borderRadius: 5,
+        borderRadius: 10,
+        shadowColor: '#414141',
+        shadowOffset: { h: 15, w: 15 },
+        shadowRadius: 3,
+        shadowOpacity: 0.1,
     },
     itemDesc: {
         fontSize: 12,
@@ -196,6 +205,31 @@ const styles = StyleSheet.create({
     },
     content: {
         width: '80%',
+    },
+
+    searchBar: {
+        // borderColor: '#ccc',
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderRadius: 8,
+        marginVertical: 5,
+        marginHorizontal: 8,
+        paddingHorizontal: 10,
+        backgroundColor: 'white',
+        height: 35,
+        lineHeight: 35,
+    },
+    searchBarText: {
+        height: 35,
+        lineHeight: 35,
+        width: 120,
+        color: '#181407',
+    },
+    searchIcon: {
+        height: 35,
+        lineHeight: 35,
+        width: 25,
+        marginTop: 5,
     },
 });
 

@@ -18,10 +18,13 @@ const service = axios.create({
 service.interceptors.request.use(
     async config => {
         const data = await Storage.get('token');
-        token = data.token;
-        if (token) {
-            config.headers.Authorization = 'Bearer ' + token;
+        if (data) {
+            token = data.token;
+            if (token) {
+                config.headers.Authorization = 'Bearer ' + token;
+            }
         }
+
         return config;
     },
     error => {
@@ -33,6 +36,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         const res = response.data;
+
         const data = res.data;
         const code = res.code;
 
@@ -56,6 +60,7 @@ service.interceptors.response.use(
         return Promise.resolve(res);
     },
     error => {
+        console.log(error);
         return Promise.resolve({});
     }
 );

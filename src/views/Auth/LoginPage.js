@@ -61,7 +61,8 @@ export default function Login({ navigation }) {
             navigation.navigate('Layout');
             Toast.success('登录成功');
         } else {
-            Toast.warning(message);
+            console.log({ code, data, message });
+            Toast.warning(message ? message : 'Error');
         }
     };
 
@@ -87,10 +88,31 @@ export default function Login({ navigation }) {
                 <View style={styles.bottomView}>
                     <Text style={styles.loginText}>Login</Text>
                     <View style={styles.inputView}>
-                        <TextInput style={{ height: 40, width: '100%' }} label="Phone" value={form.phone} mode="outlined" error={!form.isValid} maxLength={11} onChangeText={phone => setForm({ ...form, phone: phone })} left={<TextInput.Icon name="phone" color={'#ccc'} />} keyboardType="phone-pad" />
+                        <TextInput
+                            style={{ height: 40, width: '100%' }}
+                            label="Phone"
+                            value={form.phone}
+                            mode="outlined"
+                            error={!form.isValid}
+                            maxLength={11}
+                            onChangeText={phone => setForm({ ...form, phone: phone })}
+                            left={<TextInput.Icon name="phone" color={'#ccc'} />}
+                            keyboardType="phone-pad"
+                        />
                     </View>
                     <View style={styles.inputView}>
-                        <TextInput secureTextEntry={true} keyboardType="default" style={{ height: 40, width: '100%' }} label="Password" value={form.password} mode="outlined" error={!form.isValidPass} maxLength={11} onChangeText={password => setForm({ ...form, password: password })} left={<TextInput.Icon name="eye-outline" color={'#ccc'} />} />
+                        <TextInput
+                            secureTextEntry={true}
+                            keyboardType="default"
+                            style={{ height: 40, width: '100%' }}
+                            label="Password"
+                            value={form.password}
+                            mode="outlined"
+                            error={!form.isValidPass}
+                            maxLength={11}
+                            onChangeText={password => setForm({ ...form, password: password })}
+                            left={<TextInput.Icon name="eye-outline" color={'#ccc'} />}
+                        />
                     </View>
                     {/* <Text style={styles.fpText}>Forgot Password?</Text> */}
                     <View style={{ marginTop: 10 }}>

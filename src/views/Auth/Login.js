@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, StatusBar, Dimensions } from 'react-native';
-import { TextInput, Card, Button } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import validator from '../../utils/validator';
 import { verifyCode } from '../../apis/auth';
 import * as Animatable from 'react-native-animatable';

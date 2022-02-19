@@ -7,6 +7,7 @@ import Login from '../src/views/Auth/LoginPage';
 import Verify from '../src/views/Auth/Verify';
 import Layout from './views/Layout/Index';
 import Show from './views/Home/Show';
+import Search from './views/Home/Search';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -17,6 +18,7 @@ function App() {
                 <Stack.Screen name="Verify" component={Verify} />
                 <Stack.Screen name="Layout" component={Layout} />
                 <Stack.Screen name="Show" component={Show} />
+                <Stack.Screen name="Search" component={Search} />
             </Stack.Navigator>
         </NavigationContainer>
     );
