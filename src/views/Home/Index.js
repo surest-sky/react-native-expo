@@ -7,7 +7,8 @@ import Toast from '../../utils/toast';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemComponent from './Item';
-import LoadingComponent from './Loading';
+import LoadingComponent from '../../Components/Loading';
+import MoreComponent from './More';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
@@ -15,7 +16,6 @@ const width = Dimensions.get('window').width;
  * 导航到 搜索界面
  */
 const NativeSearchPage = () => {
-    console.log(22);
     RootNavigation.navigate('Search');
 };
 
@@ -47,11 +47,15 @@ const Home = () => {
     const [list, setList] = React.useState([]);
     const [total, setTotal] = React.useState(0);
     const [loading, setLoading] = React.useState(true);
+    const [moreItem, setMoreItem] = React.useState({
+        visible: false,
+        item: {},
+    });
+
     const searchQuery = async () => {
         setLoading(true);
         const list = await getList();
         setLoading(false);
-        console.log(list);
         setList(list);
     };
 
@@ -96,7 +100,7 @@ const Home = () => {
     }, [filter.keyword]);
 
     const renderItem = ({ item }) => {
-        return <ItemComponent item={item} sheetRef={sheetRef} setSheetContent={setSheetContent} />;
+        return <ItemComponent setMoreItem={setMoreItem} item={item} sheetRef={sheetRef} setSheetContent={setSheetContent} />;
     };
 
     const onEndReached = async () => {
@@ -141,6 +145,8 @@ const Home = () => {
                     />
                 </View>
             )}
+
+            <MoreComponent moreItem={moreItem} setMoreItem={setMoreItem} />
 
             <RBSheet
                 ref={sheetRef}

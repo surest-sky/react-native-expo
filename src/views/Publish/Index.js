@@ -1,13 +1,63 @@
 import * as React from 'react';
-import { View, Text, ScrollView, TextInput, StyleSheet, Dimensions } from 'react-native';
+import { View, Animated, Text, TextInput, StyleSheet, Dimensions, ScrollView, PanResponder } from 'react-native';
 import { Button } from 'react-native-paper';
 import Toast from '../../utils/toast';
 import { postApi } from '../../apis/list';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Divider } from 'react-native-paper';
+
+const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
 const height = Dimensions.get('window').height;
-const Editor = () => {
+const width = Dimensions.get('window').width;
+const Editor = ({ content, setContent, loading }) => {
+    return (
+        <ScrollView>
+            <Divider />
+            <TextInput returnKeyType={'done'} value={content} multiline textAlignVertical={'top'} editable numberOfLines={4} style={styles.editor} onChangeText={text => setContent(text)} />
+        </ScrollView>
+    );
+};
+
+/**
+ * 顶部导航
+ * @returns
+ */
+const AppHeaderBar = ({ navigation, onSubmit, data_id }) => {
+    if (data_id) {
+        return (
+            <Appbar.Header>
+                <Appbar.BackAction
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                />
+                <Appbar.Content title="编辑" />
+                <Appbar.Action
+                    icon={MORE_ICON}
+                    onPress={() => {
+                        onSubmit();
+                    }}
+                />
+            </Appbar.Header>
+        );
+    }
+
+    return (
+        <Appbar.Header>
+            <Appbar.Content title="发布文章" />
+            <Appbar.Action icon="checkbox-marked-circle" onPress={() => {}} />
+        </Appbar.Header>
+    );
+};
+/**
+ * 组件
+ * @param {*} param0
+ * @returns
+ */
+const Publish = ({ navigation, route }) => {
+    const data_id = route.params.data_id;
+    const sheetRef = React.useRef();
     const [value, onChangeText] = React.useState('');
     const [content, setContent] = React.useState('');
     const [loading, setLoading] = React.useState(false);
@@ -25,39 +75,12 @@ const Editor = () => {
 
         setContent('');
     };
-    return (
-        <View>
-            <TextInput value={content} multiline textAlignVertical={'top'} editable numberOfLines={4} style={styles.editor} onChangeText={text => setContent(text)} />
-            <Button loading={loading} contentStyle={{ height: 40 }} style={styles.editorButton} icon="" mode="contained" onPress={onSubmit}>
-                快速发布
-            </Button>
-        </View>
-    );
-};
-
-const AppHeaderBar = () => {
-    const _goBack = () => console.log('Went back');
-
-    const _handleSearch = () => console.log('Searching');
-
-    const _handleMore = () => console.log('Shown more');
-
-    return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={_goBack} />
-            <Appbar.Content title="Title" subtitle="Subtitle" />
-            <Appbar.Action icon="magnify" onPress={_handleSearch} />
-            <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
-        </Appbar.Header>
-    );
-};
-const Publish = ({ navigation }) => {
-    const sheetRef = React.useRef();
 
     return (
         <View style={styles.container}>
-            {/* <AppHeaderBar /> */}
-            <Editor />
+            <AppHeaderBar navigation={navigation} onSubmit={onSubmit} data_id={data_id} />
+            <Editor content={content} setContent={setContent} loading={loading} />
+
             <RBSheet
                 ref={sheetRef}
                 height={height - 100}
@@ -71,31 +94,34 @@ const Publish = ({ navigation }) => {
                         paddingLeft: 20,
                     },
                 }}
-            >
-                <ScrollView>
-                    <Text>222</Text>
-                </ScrollView>
-            </RBSheet>
+            ></RBSheet>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 35,
-        paddingHorizontal: 5,
+        height: height,
+        backgroundColor: 'white',
     },
     editor: {
-        height: height - 500,
-        padding: 10,
-        backgroundColor: 'white',
-        borderColor: '#ccc',
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        borderWidth: 1,
+        width: width,
+        paddingTop: 15,
+        paddingHorizontal: 10,
+        height: height - 150,
+        borderRadius: 10,
+        shadowColor: '#414141',
+        shadowOffset: { h: 15, w: 15 },
+        shadowRadius: 3,
+        shadowOpacity: 0.1,
     },
     editorButton: {
-        marginTop: 10,
+        // width: 50,
+        // height: 40,
+        // borderRadius: 30,
+        // position: 'absolute',
+        // bottom: 400,
+        // right: 10,
     },
 });
 

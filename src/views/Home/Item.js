@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as React from 'react';
 import * as RootNavigation from '../../utils/rootNavigation';
+import { Button, Menu, Divider, Provider } from 'react-native-paper';
 
 const contentTitle = (title, length = 35) => {
     if (title.length > 10) {
@@ -8,17 +9,19 @@ const contentTitle = (title, length = 35) => {
     }
     return title;
 };
-const ItemComponent = ({ item, sheetRef, setSheetContent }) => {
+const ItemComponent = ({ item, sheetRef, setSheetContent, setMoreItem }) => {
     const showNote = () => {
         if (item.url) {
-            RootNavigation.navigate('Show', { url: item.url });
+            RootNavigation.navigate('WebShow', { url: item.url });
         } else {
-            // Toast.success('稍等片刻，开发中呢~');
-            setSheetContent({
-                content: `${item.content}`,
-                created_at: `创建时间: ${item.created_at}`,
-            });
-            sheetRef.current.open();
+            // // Toast.success('稍等片刻，开发中呢~');
+            // setSheetContent({
+            //     content: `${item.content}`,
+            //     created_at: `创建时间: ${item.created_at}`,
+            // });
+            // sheetRef.current.open();
+
+            RootNavigation.navigate('Show', { data_id: item.data_id });
         }
     };
     return (
@@ -30,8 +33,16 @@ const ItemComponent = ({ item, sheetRef, setSheetContent }) => {
                     {item.url ? <Text style={{ marginTop: 10, color: 'gray', fontSize: 12 }}>{contentTitle(item.url)}</Text> : <Text></Text>}
                 </View>
 
-                <View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.itemDesc}>{item.created_at}</Text>
+                    <Text
+                        onPress={() => {
+                            setMoreItem({ item: item, visible: true });
+                        }}
+                        style={{ fontSize: 20, marginTop: 0 }}
+                    >
+                        ....
+                    </Text>
                 </View>
             </View>
         </TouchableOpacity>

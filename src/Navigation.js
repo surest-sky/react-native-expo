@@ -6,8 +6,10 @@ import * as RootNavigation from './utils/rootNavigation';
 import Login from '../src/views/Auth/LoginPage';
 import Verify from '../src/views/Auth/Verify';
 import Layout from './views/Layout/Index';
-import Show from './views/Home/Show';
+import WebShow from './views/Home/WebShow';
+import Show from './views/Note/Show';
 import Search from './views/Home/Search';
+import Edit from './views/Publish/Index';
 
 const Stack = createNativeStackNavigator();
 function App() {
@@ -17,8 +19,10 @@ function App() {
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Verify" component={Verify} />
                 <Stack.Screen name="Layout" component={Layout} />
+                <Stack.Screen name="WebShow" component={WebShow} />
                 <Stack.Screen name="Show" component={Show} />
                 <Stack.Screen name="Search" component={Search} />
+                <Stack.Screen name="Edit" component={Edit} />
             </Stack.Navigator>
         </NavigationContainer>
     );

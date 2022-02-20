@@ -15,3 +15,19 @@ export function postApi(data) {
         data,
     });
 }
+
+export function showApi(data) {
+    return request({
+        url: '/note/show',
+        method: 'get',
+        params: data,
+    });
+}
+
+export function noteDelApi(data) {
+    return request({
+        url: '/note/delete',
+        method: 'delete',
+        params: data,
+    });
+}

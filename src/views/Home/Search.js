@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { listApi } from '../../apis/list';
 import ItemComponent from './Item';
-import LoadingComponent from './Loading';
+import LoadingComponent from '../../Components/Loading';
 import Empty from '../../../resource/images/empty.png';
 
 const height = Dimensions.get('window').height;
