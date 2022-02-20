@@ -20,7 +20,6 @@ const ItemComponent = ({ item, sheetRef, setSheetContent, setMoreItem }) => {
             //     created_at: `创建时间: ${item.created_at}`,
             // });
             // sheetRef.current.open();
-
             RootNavigation.navigate('Show', { data_id: item.data_id });
         }
     };

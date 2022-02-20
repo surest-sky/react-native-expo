@@ -5,13 +5,13 @@ const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 const PlaceHolderItem = () => {
     return (
-        <View>
+        <View style={{ paddingLeft: 10, paddingRight: 10, marginTop: 20 }}>
             <Placeholder styles={{ marginTop: 20 }}>
                 <PlaceholderLine width={width} />
                 <PlaceholderLine />
                 <PlaceholderLine width={width} />
             </Placeholder>
-            <Placeholder styles={{ marginTop: 20 }}>
+            <Placeholder styles={{ marginTop: 60 }}>
                 <PlaceholderLine width={width} />
                 <PlaceholderLine />
                 <PlaceholderLine width={width} />

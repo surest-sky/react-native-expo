@@ -6,6 +6,7 @@ import { postApi } from '../../apis/list';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { Appbar, Divider } from 'react-native-paper';
 
+import * as RootNavigation from '../../utils/rootNavigation';
 const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
 const height = Dimensions.get('window').height;
@@ -14,7 +15,18 @@ const Editor = ({ content, setContent, loading }) => {
     return (
         <ScrollView>
             <Divider />
-            <TextInput returnKeyType={'done'} value={content} multiline textAlignVertical={'top'} editable numberOfLines={4} style={styles.editor} onChangeText={text => setContent(text)} />
+            <TextInput
+                placeholder="说点什么吧"
+                autoFocus={true}
+                returnKeyType={'done'}
+                value={content}
+                multiline
+                textAlignVertical={'top'}
+                editable
+                numberOfLines={4}
+                style={styles.editor}
+                onChangeText={text => setContent(text)}
+            />
         </ScrollView>
     );
 };
@@ -23,7 +35,7 @@ const Editor = ({ content, setContent, loading }) => {
  * 顶部导航
  * @returns
  */
-const AppHeaderBar = ({ navigation, onSubmit, data_id }) => {
+const AppHeaderBar = ({ navigation, onSubmit, data_id, setIndex }) => {
     if (data_id) {
         return (
             <Appbar.Header>
@@ -34,7 +46,7 @@ const AppHeaderBar = ({ navigation, onSubmit, data_id }) => {
                 />
                 <Appbar.Content title="编辑" />
                 <Appbar.Action
-                    icon={MORE_ICON}
+                    icon="checkbox-marked-circle"
                     onPress={() => {
                         onSubmit();
                     }}
@@ -45,8 +57,18 @@ const AppHeaderBar = ({ navigation, onSubmit, data_id }) => {
 
     return (
         <Appbar.Header>
+            <Appbar.BackAction
+                onPress={() => {
+                    setIndex(0);
+                }}
+            />
             <Appbar.Content title="发布文章" />
-            <Appbar.Action icon="checkbox-marked-circle" onPress={() => {}} />
+            <Appbar.Action
+                icon="checkbox-marked-circle"
+                onPress={() => {
+                    onSubmit();
+                }}
+            />
         </Appbar.Header>
     );
 };
@@ -55,8 +77,12 @@ const AppHeaderBar = ({ navigation, onSubmit, data_id }) => {
  * @param {*} param0
  * @returns
  */
-const Publish = ({ navigation, route }) => {
-    const data_id = route.params.data_id;
+const Publish = ({ navigation, route, setIndex }) => {
+    let data_id;
+    if (route) {
+        data_id = route.params.data_id;
+    }
+
     const sheetRef = React.useRef();
     const [value, onChangeText] = React.useState('');
     const [content, setContent] = React.useState('');
@@ -64,21 +90,21 @@ const Publish = ({ navigation, route }) => {
 
     const onSubmit = async () => {
         if (content.length == 0) {
-            Toast.warning('请输入笔记内容');
+            Toast.warning('请输入笔记内容', Toast.CENTER);
             return;
         }
 
         setLoading(true);
         const data = await postApi({ content: content });
         setLoading(false);
-        Toast.success('发布成功 !');
+        Toast.success('发布成功', Toast.CENTER);
 
         setContent('');
     };
 
     return (
         <View style={styles.container}>
-            <AppHeaderBar navigation={navigation} onSubmit={onSubmit} data_id={data_id} />
+            <AppHeaderBar navigation={navigation} onSubmit={onSubmit} data_id={data_id} setIndex={setIndex} />
             <Editor content={content} setContent={setContent} loading={loading} />
 
             <RBSheet

@@ -2,19 +2,23 @@ import Toast from 'react-native-root-toast';
 import { COLOR_INFO, COLOR_WARNING, COLOR_SUCCESS } from './color';
 
 class ToastAction {
-    static success(message) {
-        this.show('success', message);
+    static BOTTOM = Toast.positions.BOTTOM;
+    static TOP = Toast.positions.TOP;
+    static CENTER = Toast.positions.CENTER;
+
+    static success(message, position = Toast.positions.BOTTOM) {
+        this.show('success', message, position);
     }
 
-    static info(message) {
-        this.show('info', message);
+    static info(message, position = Toast.positions.BOTTOM) {
+        this.show('info', message, position);
     }
 
-    static warning(message) {
-        this.show('warning', message);
+    static warning(message, position = Toast.positions.BOTTOM) {
+        this.show('warning', message, position);
     }
 
-    static show(type, messsage) {
+    static show(type, messsage, position) {
         let color = COLOR_INFO;
         switch (type) {
             case 'success':
@@ -26,9 +30,10 @@ class ToastAction {
             default:
                 break;
         }
+        console.log('position', position);
         const toast = Toast.show(messsage, {
             duration: Toast.durations.LONG,
-            position: Toast.positions.BOTTOM,
+            position: position,
             backgroundColor: color,
             textColor: 'white',
             shadow: true,

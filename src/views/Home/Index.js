@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemComponent from './Item';
 import LoadingComponent from '../../Components/Loading';
 import MoreComponent from './More';
+import Empty from '../../Components/Empty';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
@@ -88,16 +89,10 @@ const Home = () => {
 
     React.useEffect(async () => {
         setLoading(true);
-        getList();
+        searchQuery();
         setLoading(false);
         setRefreshing(false);
     }, []);
-
-    React.useEffect(async () => {
-        if (filter.keyword.length == 0) {
-            searchQuery();
-        }
-    }, [filter.keyword]);
 
     const renderItem = ({ item }) => {
         return <ItemComponent setMoreItem={setMoreItem} item={item} sheetRef={sheetRef} setSheetContent={setSheetContent} />;
@@ -107,13 +102,15 @@ const Home = () => {
         if (total <= list.length) {
             return;
         }
-        setFilter({ ...filter, page: filter.page++ });
-        const data = await listApi(filter);
-        let tempList = list;
-        if (data) {
-            tempList = tempList.concat(data.data.list);
-            setList(tempList);
-        }
+
+        console.log('onEndReached');
+        // setFilter({ ...filter, page: filter.page++ });
+        // const data = await listApi(filter);
+        // let tempList = list;
+        // if (data) {
+        //     tempList = tempList.concat(data.data.list);
+        //     setList(tempList);
+        // }
         return;
     };
 
@@ -124,28 +121,33 @@ const Home = () => {
         return rnd;
     }
 
+    const RenderList = () => {
+        if (list.length == 0) {
+            return <Empty />;
+        }
+
+        return (
+            <View style={styles.wrapper}>
+                <FlatList
+                    sheetRef={sheetRef}
+                    initialNumToRender={7}
+                    onEndReachedThreshold={0.1}
+                    refreshing={refreshing}
+                    onEndReached={onEndReached}
+                    data={list}
+                    onRefresh={onRefresh}
+                    renderItem={renderItem}
+                    keyExtractor={item => RndNum(10)}
+                />
+            </View>
+        );
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <SerachBar />
 
-            {loading == true ? (
-                <LoadingComponent />
-            ) : (
-                <View style={styles.wrapper}>
-                    <FlatList
-                        sheetRef={sheetRef}
-                        initialNumToRender={7}
-                        onEndReachedThreshold={0.1}
-                        refreshing={refreshing}
-                        onEndReached={onEndReached}
-                        data={list}
-                        onRefresh={onRefresh}
-                        renderItem={renderItem}
-                        keyExtractor={item => RndNum(10)}
-                    />
-                </View>
-            )}
-
+            {loading == true ? <LoadingComponent /> : <RenderList />}
             <MoreComponent moreItem={moreItem} setMoreItem={setMoreItem} />
 
             <RBSheet

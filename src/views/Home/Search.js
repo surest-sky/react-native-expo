@@ -6,7 +6,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { listApi } from '../../apis/list';
 import ItemComponent from './Item';
 import LoadingComponent from '../../Components/Loading';
-import Empty from '../../../resource/images/empty.png';
+import Empty from '../../Components/Empty';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
@@ -20,7 +20,6 @@ const Search = ({ searchQuery, filter, setFilter }) => {
                     onBlur={() => searchQuery()}
                     returnKeyType={'search'}
                     placeholder={'请输入关键词搜索'}
-                    clearButtonMode={true}
                     defaultValue={''}
                     autoFocus={true}
                     clearTextOnFocus={true}
@@ -96,11 +95,7 @@ const ListItem = () => {
 
     const RenderList = () => {
         if (!list.length) {
-            return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', marginTop: 100 }}>
-                    <Image source={Empty}></Image>
-                </View>
-            );
+            return <Empty />;
         }
         return (
             <ScrollView style={{ height: height - 50 }}>
