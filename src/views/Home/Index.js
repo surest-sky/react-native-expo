@@ -99,18 +99,18 @@ const Home = () => {
     };
 
     const onEndReached = async () => {
-        if (total <= list.length) {
+        if (total - 1 <= list.length) {
             return;
         }
 
-        console.log('onEndReached');
-        // setFilter({ ...filter, page: filter.page++ });
-        // const data = await listApi(filter);
-        // let tempList = list;
-        // if (data) {
-        //     tempList = tempList.concat(data.data.list);
-        //     setList(tempList);
-        // }
+        setFilter({ ...filter, page: filter.page++ });
+        const data = await listApi(filter);
+        let tempList = list;
+        console.log(data);
+        if (data) {
+            tempList = tempList.concat(data.data.list);
+            setList(tempList);
+        }
         return;
     };
 
@@ -131,7 +131,7 @@ const Home = () => {
                 <FlatList
                     sheetRef={sheetRef}
                     initialNumToRender={7}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={0.01}
                     refreshing={refreshing}
                     onEndReached={onEndReached}
                     data={list}
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     wrapper: {
         // minHeight: 650,
         // marginBottom: 25,
+        height: '100%',
         minHeight: 100,
         // padding: 5,
         // paddingBottom: 85,
