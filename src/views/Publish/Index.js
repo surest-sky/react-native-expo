@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Animated, Text, TextInput, StyleSheet, Dimensions, ScrollView, PanResponder } from 'react-native';
 import { Button } from 'react-native-paper';
 import Toast from '../../utils/toast';
-import { postApi } from '../../apis/list';
+import { postApi, showApi } from '../../apis/list';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { Appbar, Divider } from 'react-native-paper';
 
@@ -62,7 +62,7 @@ const AppHeaderBar = ({ navigation, onSubmit, data_id, setIndex }) => {
                     setIndex(0);
                 }}
             />
-            <Appbar.Content title="发布文章" />
+            <Appbar.Content title="编写笔记" />
             <Appbar.Action
                 icon="checkbox-marked-circle"
                 onPress={() => {
@@ -95,12 +95,27 @@ const Publish = ({ navigation, route, setIndex }) => {
         }
 
         setLoading(true);
-        const data = await postApi({ content: content });
+        let params = { content: content };
+        if (data_id) {
+            params['data_id'] = data_id;
+        }
+        const data = await postApi(params);
         setLoading(false);
-        Toast.success('发布成功', Toast.CENTER);
 
-        setContent('');
+        if (data_id) {
+            Toast.success('更新成功', Toast.CENTER);
+        } else {
+            Toast.success('添加成功', Toast.CENTER);
+            setContent('');
+        }
     };
+
+    React.useEffect(async () => {
+        if (data_id) {
+            const { data } = await showApi({ data_id: data_id });
+            setContent(data.content);
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
