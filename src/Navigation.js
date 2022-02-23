@@ -6,6 +6,7 @@ import * as RootNavigation from './utils/rootNavigation';
 import Login from '../src/views/Auth/LoginPage';
 import Verify from '../src/views/Auth/Verify';
 import Layout from './views/Layout/Index';
+import Scanner from './views/Account/Scanner';
 import WebShow from './views/Home/WebShow';
 import Show from './views/Note/Show';
 import Search from './views/Home/Search';
@@ -23,6 +24,7 @@ function App() {
                 <Stack.Screen name="Show" component={Show} />
                 <Stack.Screen name="Search" component={Search} />
                 <Stack.Screen name="Edit" component={Edit} />
+                <Stack.Screen name="Scanner" component={Scanner} />
             </Stack.Navigator>
         </NavigationContainer>
     );

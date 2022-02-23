@@ -13,10 +13,10 @@ const MyComponent = ({ navigation, route }) => {
     React.useEffect(() => {
         AuthCheck();
     }, []);
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = React.useState(2);
     const HomeRoute = () => <Home navigation={navigation} />;
     const PublishRoute = () => <Publish navigation={navigation} setIndex={setIndex} />;
-    const AccountRoute = () => <Account navigation={navigation} />;
+    const AccountRoute = () => <Account navigation={navigation} route={route} />;
     const [routes] = React.useState([
         { key: 'home', title: '我的库', icon: 'card-text-outline' },
         { key: 'publish', title: '发布', icon: 'plus-circle-outline' },

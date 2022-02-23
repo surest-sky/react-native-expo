@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "kwhExpo",
-    "slug": "kwhExpo",
-    "version": "1.0.0",
+    "name": "斑点熊",
+    "slug": "dotdotbear",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/dotdotbear.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/home.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,8 +21,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/dotdotbear.png",
+        "backgroundColor": "#000000"
       },
       "package": "com.surest.reactAppExpo"
     },
