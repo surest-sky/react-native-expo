@@ -9,10 +9,16 @@ import AvatarImage from '../../../assets/dotdotbear.png';
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
-const ListItem = ({ label, value, action }) => {
+const ListItem = ({ label, value, action, navigation }) => {
     const onPress = () => {
         if (action == 'logout') {
             LogoutAction();
+            return;
+        }
+
+        if (action == 'username') {
+            navigation.navigate('Profile', { action: 'username' });
+            return;
         }
     };
     return (
@@ -80,7 +86,7 @@ const Account = ({ navigation, route }) => {
 
             <View style={styles.list}>
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
-                    <ListItem label={'用户名'} value={'Surest'} />
+                    <ListItem label={'用户名'} value={'Surest'} action={'username'} navigation={navigation} />
                     <ListItem label={'邮箱'} value={'chenf@surest.cn'} />
                 </View>
 
