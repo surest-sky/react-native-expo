@@ -92,7 +92,17 @@ const Verify = ({ navigation }) => {
             <LeftReturnBanner navigation={navigation} title={'输入验证码'} />
             <SafeAreaView style={styles.root}>
                 <View style={styles.fieldRow}>
-                    <CodeField style={styles.verifyCode} ref={ref} {...props} value={value} onChangeText={v => changeCode(v)} cellCount={CELL_COUNT} keyboardType="number-pad" textContentType="oneTimeCode" renderCell={renderCell} />
+                    <CodeField
+                        style={styles.verifyCode}
+                        ref={ref}
+                        {...props}
+                        value={value}
+                        onChangeText={v => changeCode(v)}
+                        cellCount={CELL_COUNT}
+                        keyboardType="number-pad"
+                        textContentType="oneTimeCode"
+                        renderCell={renderCell}
+                    />
                 </View>
                 <View style={{ marginTop: 10 }}>
                     <Button mode="contained" contentStyle={{ height: 40 }} loading={loading}>

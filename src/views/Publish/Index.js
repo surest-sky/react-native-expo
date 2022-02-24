@@ -5,6 +5,7 @@ import Toast from '../../utils/toast';
 import { postApi, showApi } from '../../apis/list';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { Appbar, Divider } from 'react-native-paper';
+import LoadingModal from '../../Components/LoadingModal';
 
 import * as RootNavigation from '../../utils/rootNavigation';
 const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
@@ -116,6 +117,10 @@ const Publish = ({ navigation, route, setIndex }) => {
             setContent(data.content);
         }
     }, []);
+
+    if (loading) {
+        return <LoadingModal visible={loading} close={setLoading} title={'请稍后'} />;
+    }
 
     return (
         <View style={styles.container}>

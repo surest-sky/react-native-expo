@@ -5,21 +5,23 @@ import { LogoutAction } from '../../utils/action';
 import { Switch, Title, TouchableRipple } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import AvatarImage from '../../../assets/dotdotbear.png';
+import { getUser } from '../../apis/profile';
+import LoadingComponent from '../../Components/Loading';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
 
 const ListItem = ({ label, value, action, navigation }) => {
     const onPress = () => {
+        if (!action) {
+            return;
+        }
         if (action == 'logout') {
             LogoutAction();
             return;
         }
 
-        if (action == 'username') {
-            navigation.navigate('Profile', { action: 'username' });
-            return;
-        }
+        navigation.navigate('Profile', { action, value });
     };
     return (
         <TouchableRipple onPress={onPress}>
@@ -33,11 +35,29 @@ const ListItem = ({ label, value, action, navigation }) => {
 
 const Account = ({ navigation, route }) => {
     const [isNight, setNight] = React.useState(true);
+    const [user, setUser] = React.useState({
+        phone: '',
+    });
+    const [loading, setLoading] = React.useState(true);
     const toggleSwitch = previousState => {
-        console.log(!previousState);
         setNight(previousState => !previousState);
     };
-    console.log(route.params);
+
+    React.useEffect(async () => {
+        const { data } = await getUser();
+        console.log('user', data);
+        setUser(data);
+        setLoading(false);
+    }, []);
+
+    if (loading) {
+        return (
+            <View style={{ marginTop: 100 }}>
+                <LoadingComponent />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.banner}>
@@ -69,8 +89,8 @@ const Account = ({ navigation, route }) => {
                             marginLeft: 10,
                         }}
                     >
-                        <Title style={styles.name}>Surest</Title>
-                        <Text style={styles.subId}>ID: 22</Text>
+                        <Title style={styles.name}>{user.account}</Title>
+                        <Text style={styles.subId}>ID: {user.user_id}</Text>
                     </View>
                 </View>
 
@@ -86,13 +106,14 @@ const Account = ({ navigation, route }) => {
 
             <View style={styles.list}>
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
-                    <ListItem label={'用户名'} value={'Surest'} action={'username'} navigation={navigation} />
-                    <ListItem label={'邮箱'} value={'chenf@surest.cn'} />
+                    <ListItem label={'用户名'} value={user.account} action={'username'} navigation={navigation} />
+                    {/* <ListItem label={'邮箱'} value={'chenf@surest.cn'} /> */}
+                    <ListItem label={'手机号码'} value={user.phone.substr(0, 3) + '*****' + user.phone.substr(-3, 3)} />
                 </View>
 
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
-                    <ListItem label={'修改密码'} />
-                    <ListItem label={'账号绑定'} />
+                    <ListItem label={'修改密码'} action={'password'} navigation={navigation} />
+                    {/* <ListItem label={'账号绑定'} /> */}
                 </View>
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
                     <ListItem label={'退出登录'} action={'logout'} />
@@ -129,7 +150,7 @@ const styles = StyleSheet.create({
     },
     subId: {
         fontSize: 15,
-        color: '#ccc',
+        color: '#f2f4f6',
     },
     follow: {
         flex: 1,
@@ -138,7 +159,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderTopWidth: 1,
         borderStyle: 'solid',
-        borderTopColor: 'white',
+        borderTopColor: '#f2f4f6',
         paddingTop: 10,
     },
     followItem: {
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderStyle: 'solid',
-        borderRightColor: 'white',
+        borderRightColor: '#f2f4f6',
     },
     followItemText: {
         color: 'white',

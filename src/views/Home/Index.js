@@ -99,7 +99,7 @@ const Home = () => {
     };
 
     const onEndReached = async () => {
-        if (total - 1 <= list.length) {
+        if (total <= list.length) {
             return;
         }
 
