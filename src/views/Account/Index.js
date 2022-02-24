@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, useTheme, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, useTheme, Image, Text, StyleSheet, Dimensions } from 'react-native';
 import { Button, Headline, Avatar } from 'react-native-paper';
 import { LogoutAction } from '../../utils/action';
 import { Switch, Title, TouchableRipple } from 'react-native-paper';
@@ -37,10 +37,17 @@ const Account = ({ navigation, route }) => {
     const [isNight, setNight] = React.useState(true);
     const [user, setUser] = React.useState({
         phone: '',
+        account: '',
     });
     const [loading, setLoading] = React.useState(true);
     const toggleSwitch = previousState => {
         setNight(previousState => !previousState);
+    };
+    const getPhone = () => {
+        if (!user.phone) {
+            return '';
+        }
+        return user.phone.substr(0, 3) + '*****' + user.phone.substr(-3, 3);
     };
 
     React.useEffect(async () => {
@@ -48,6 +55,8 @@ const Account = ({ navigation, route }) => {
         console.log('user', data);
         setUser(data);
         setLoading(false);
+
+        return () => setLoading(true);
     }, []);
 
     if (loading) {
@@ -108,7 +117,7 @@ const Account = ({ navigation, route }) => {
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>
                     <ListItem label={'用户名'} value={user.account} action={'username'} navigation={navigation} />
                     {/* <ListItem label={'邮箱'} value={'chenf@surest.cn'} /> */}
-                    <ListItem label={'手机号码'} value={user.phone.substr(0, 3) + '*****' + user.phone.substr(-3, 3)} />
+                    {/* <ListItem label={'手机号码'} value={} /> */}
                 </View>
 
                 <View style={{ backgroundColor: 'white', marginTop: 10 }}>

@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
      * 变量相关
      */
     const [form, setForm] = React.useState({
-        phone: '18270952773',
+        phone: '',
         loading: false,
         password: '',
         isValid: true,

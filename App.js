@@ -9,11 +9,11 @@ export const PreferencesContext = React.createContext({
     isThemeDark: false,
 });
 
-if (true) {
-    import('./src/utils/ReactotronConfig').then(() => {
-        console.log('ReactotronConfig');
-    });
-}
+// if (true) {
+//     import('./src/utils/ReactotronConfig').then(() => {
+//         console.log('ReactotronConfig');
+//     });
+// }
 const theme = {
     ...DefaultTheme,
     roundness: 2,
