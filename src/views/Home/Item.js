@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import * as React from 'react';
 import * as RootNavigation from '../../utils/rootNavigation';
 import { Button, Menu, Divider, Provider } from 'react-native-paper';
+const width = Dimensions.get('window').width;
 
 const contentTitle = (title, length = 35) => {
     if (title.length > 10) {
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         // height: 75,
         backgroundColor: 'white',
         marginVertical: 5,
-        marginHorizontal: 10,
+        // marginHorizontal: 10,
         padding: 10,
         paddingBottom: 10,
         borderRadius: 10,
@@ -61,6 +62,7 @@ const styles = StyleSheet.create({
         shadowOffset: { h: 15, w: 15 },
         shadowRadius: 3,
         shadowOpacity: 0.1,
+        // width: width,
     },
     itemDesc: {
         fontSize: 12,

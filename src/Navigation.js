@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, View, Text, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Appbar } from 'react-native-paper';
 import * as RootNavigation from './utils/rootNavigation';
 import Login from '../src/views/Auth/LoginPage';
 import Verify from '../src/views/Auth/Verify';
@@ -14,10 +15,29 @@ import Search from './views/Home/Search';
 import Edit from './views/Publish/Index';
 
 const Stack = createNativeStackNavigator();
+
+function CustomNavigationBar({ navigation, back }) {
+    console.log(navigation);
+    return <></>;
+    return (
+        <Appbar.Header>
+            {back ? <Appbar.BackAction onPress={navigation.goBack} /> : null}
+            <Appbar.Content title="My awesome app" />
+        </Appbar.Header>
+    );
+}
+
 function App() {
     return (
         <NavigationContainer ref={RootNavigation.navigationRef}>
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Layout">
+            <Stack.Navigator
+                screenOptions={{
+                    header: props => <CustomNavigationBar {...props} />,
+                }}
+                headerShown={false}
+                // screenOptions={{ headerShown: false }}
+                initialRouteName="Layout"
+            >
                 <Stack.Screen name="Login" component={Login} />
                 <Stack.Screen name="Verify" component={Verify} />
                 <Stack.Screen name="Layout" component={Layout} />

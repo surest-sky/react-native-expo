@@ -10,8 +10,10 @@ import MoreComponent from '../Home/More';
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;
-const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
-
+let MORE_ICON = 'dots-horizontal';
+if (typeof Platform !== 'undefined') {
+    MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+}
 /**
  * 顶部导航
  * @returns

@@ -40,8 +40,6 @@ const Password = ({ sRef }) => {
     const [loading, setLoading] = React.useState(false);
 
     const getItem = () => {
-        console.log('password', password.length);
-        console.log('confirmPassword', confirmPassword.length);
         if (password.length < 6 || password.length > 12) {
             Toast.success('密码长度为 6-12 个字符串');
             return false;
@@ -163,7 +161,6 @@ const App = props => {
         }
 
         const { data, code, message } = await updateUser(item);
-        console.log(data);
         if (code == 200) {
             Toast.success('修改成功');
             RootNavigation.navigate('Layout');

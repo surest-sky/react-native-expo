@@ -4,7 +4,6 @@ import Toast from './toast';
 import * as RootNavigation from './rootNavigation';
 
 export const LoginAction = ({ token }) => {
-    console.log('token', token);
     Storage.save('token', { token: token });
 };
 
@@ -27,6 +26,5 @@ export const AuthCheck = async () => {
 
 const setProfile = async () => {
     const { code, data } = await meApi();
-    console.log(data.data);
     Storage.save('user', data.data);
 };

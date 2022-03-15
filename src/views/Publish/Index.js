@@ -8,7 +8,10 @@ import { Appbar, Divider } from 'react-native-paper';
 import LoadingModal from '../../Components/LoadingModal';
 
 import * as RootNavigation from '../../utils/rootNavigation';
-const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+let MORE_ICON = 'dots-horizontal';
+if (typeof Platform !== 'undefined') {
+    MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
+}
 
 const height = Dimensions.get('window').height;
 const width = Dimensions.get('window').width;

@@ -61,7 +61,6 @@ export default function Login({ navigation }) {
             navigation.navigate('Layout');
             Toast.success('登录成功');
         } else {
-            console.log({ code, data, message });
             Toast.warning(message ? message : 'Error');
         }
     };
@@ -77,7 +76,7 @@ export default function Login({ navigation }) {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <TouchableWithoutFeedback>
             <SafeAreaView style={styles.container}>
                 <View style={{ flex: 1 }}>
                     <Image resizeMode={'cover'} style={{ flex: 1, width: null, marginTop: -500 }} source={BackgroundImage} />

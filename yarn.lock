@@ -4486,7 +4486,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.npmmirror.com/prop-types/download/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -4623,18 +4623,10 @@ react-native-raw-bottom-sheet@^2.2.0:
   resolved "https://registry.nlark.com/react-native-raw-bottom-sheet/download/react-native-raw-bottom-sheet-2.2.0.tgz#d11dabb86aadb014273767ef7b554924b13633c5"
   integrity sha1-0R2ruGqtsBQnN2fve1VJJLE2M8U=
 
-react-native-root-siblings@^4.0.0, react-native-root-siblings@^4.1.1:
+react-native-root-siblings@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmmirror.com/react-native-root-siblings/download/react-native-root-siblings-4.1.1.tgz#b7742db7634a87f507eb99a5fd699c4f10c46ab0"
   integrity sha1-t3Qtt2NKh/UH65ml/WmcTxDEarA=
-
-react-native-root-toast@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.npmmirror.com/react-native-root-toast/download/react-native-root-toast-3.3.0.tgz#526aaf0ac48f584fb851d5e82855edfe585930ce"
-  integrity sha1-UmqvCsSPWE+4UdXoKFXt/lhZMM4=
-  dependencies:
-    prop-types "^15.5.10"
-    react-native-root-siblings "^4.0.0"
 
 react-native-safe-area-context@^3.3.2:
   version "3.3.2"
@@ -4648,6 +4640,11 @@ react-native-screens@^3.10.2:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-toast-message@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmmirror.com/react-native-toast-message/-/react-native-toast-message-2.1.1.tgz#4d56add4ced45153a2d66649d21363de10952637"
+  integrity sha512-0ZfmphT8RtrWUuZ28y/zwo/aKtvbMtWK4taEDFxOTf6Lwj29YuBv7mA0Nh/I2Xl4/prnMuZe/lZUORcKNuYfkQ==
 
 react-native-vector-icons@^9.0.0:
   version "9.0.0"

@@ -3,6 +3,7 @@ import { Button, View, Text, StatusBar } from 'react-native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import Navigation from './src/Navigation';
 import { RootSiblingParent } from 'react-native-root-siblings';
+import Toast from 'react-native-toast-message';
 
 export const PreferencesContext = React.createContext({
     toggleTheme: () => {},
@@ -31,6 +32,7 @@ function App() {
                     <Navigation />
                 </View>
             </RootSiblingParent>
+            <Toast />
         </PaperProvider>
     );
 }

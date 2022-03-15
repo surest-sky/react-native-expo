@@ -63,7 +63,17 @@ const TextInputWrapper = ({ navigation }) => {
 
     return (
         <View style={styles.loginContainer}>
-            <TextInput style={{ height: 40 }} label="Phone" value={form.phone} mode="outlined" error={!form.isValid} maxLength={11} onChangeText={phone => setForm({ ...form, phone: phone })} left={<TextInput.Icon name="phone" color={'#ccc'} />} keyboardType="phone-pad" />
+            <TextInput
+                style={{ height: 40 }}
+                label="Phone"
+                value={form.phone}
+                mode="outlined"
+                error={!form.isValid}
+                maxLength={11}
+                onChangeText={phone => setForm({ ...form, phone: phone })}
+                left={<TextInput.Icon name="phone" color={'#ccc'} />}
+                keyboardType="phone-pad"
+            />
             <View style={{ marginTop: 10 }}>
                 <Button mode="contained" contentStyle={{ height: 40 }} onPress={() => verifyCode()} loading={form.loading}>
                     获取验证码

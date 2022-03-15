@@ -52,7 +52,6 @@ const Account = ({ navigation, route }) => {
 
     React.useEffect(async () => {
         const { data } = await getUser();
-        console.log('user', data);
         setUser(data);
         setLoading(false);
 
@@ -73,7 +72,6 @@ const Account = ({ navigation, route }) => {
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text
                         onPress={() => {
-                            console.log('扫一扫');
                             navigation.navigate('Scanner');
                         }}
                         style={{ fontSize: 15, color: 'white' }}

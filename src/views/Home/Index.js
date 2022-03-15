@@ -8,6 +8,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ItemComponent from './Item';
 import LoadingComponent from '../../Components/Loading';
+import TagComponent from '../../Components/Tags';
 import MoreComponent from './More';
 import Empty from '../../Components/Empty';
 const height = Dimensions.get('window').height;
@@ -128,6 +129,7 @@ const Home = () => {
 
         return (
             <View style={styles.wrapper}>
+                {/* <TagComponent /> */}
                 <FlatList
                     sheetRef={sheetRef}
                     initialNumToRender={7}
@@ -185,6 +187,7 @@ const styles = StyleSheet.create({
         minHeight: 100,
         // padding: 5,
         // paddingBottom: 85,
+        padding: 10,
     },
     item: {
         // height: 75,
