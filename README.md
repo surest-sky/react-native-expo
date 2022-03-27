@@ -1,3 +1,18 @@
-# react-native-demo
+关于 react-native demo App
+ 
+# Install Expo
 
-# 编写一个 关于 react-native demo App
+https://expo.dev/
+
+# Install Plugin
+
+- yarn install
+- yarn start
+
+# Build
+
+- expo build:ios
+
+# Publish
+
+- expo publish 
